@@ -70,6 +70,7 @@ def build_prompt(mem: memory_bus.MemoryRecord, pos: tuple[float, float, float]) 
         "status: airborne, cruising, nominal\n\n"
         "LATEST MEMORY ENTRY\n"
         f"memory_id: {mem.memory_id}\n"
+        f"channel: {mem.memory_channel}\n"
         f"source: {mem.source}\n"
         f"confidence: {mem.confidence}\n"
         f"action: {mem.action}\n"

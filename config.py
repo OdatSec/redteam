@@ -143,19 +143,32 @@ SCENARIO_ID_ALIASES = {
     "S2L": "06_llm_runtime_poison_inside_nfz",
     "S3L": "07_llm_runtime_poison_behind_nfz",
     "S4L": "08_llm_stealth_drift_through_nfz",
+    # final study: remaining LLM memory-channel attacks
+    "S5L": "09_llm_false_policy_clearance",
+    "S6L": "10_llm_fake_observation_lure",
+    "S7L": "11_llm_telemetry_summary_deception",
+    "S8L": "12_llm_authority_confidence_injection",
 }
 
-# v0.2 LLM-victim scenarios (kept separate so v0.1 --all stays frozen).
+# LLM-victim scenarios. v0.2 froze S2L–S4L; the final study adds S5L–S8L.
 LLM_SCENARIO_ORDER = [
     "06_llm_runtime_poison_inside_nfz",
     "07_llm_runtime_poison_behind_nfz",
     "08_llm_stealth_drift_through_nfz",
+    "09_llm_false_policy_clearance",
+    "10_llm_fake_observation_lure",
+    "11_llm_telemetry_summary_deception",
+    "12_llm_authority_confidence_injection",
 ]
 
 SCENARIO_IDS.update({
     "06_llm_runtime_poison_inside_nfz": "S2L",
     "07_llm_runtime_poison_behind_nfz": "S3L",
     "08_llm_stealth_drift_through_nfz": "S4L",
+    "09_llm_false_policy_clearance": "S5L",
+    "10_llm_fake_observation_lure": "S6L",
+    "11_llm_telemetry_summary_deception": "S7L",
+    "12_llm_authority_confidence_injection": "S8L",
 })
 
 # Memory architecture types (see REDTEAM_METHODOLOGY.md §3).
@@ -172,24 +185,24 @@ MEMORY_TYPES = {
         "description": "Natural-language trusted_claim field; no LLM reasoning layer yet",
     },
     "observation_memory": {
-        "status": "planned",
+        "status": "implemented",
         "v0_1": False,
-        "description": "Perception summaries, dropped frames, fake detections",
+        "description": "Fake observation lure (S6L): claimed target/person of interest",
     },
     "peer_message_memory": {
-        "status": "partial",
+        "status": "implemented",
         "v0_1": True,
-        "description": "Source attribution (A0); single-writer impersonation only",
+        "description": "Source attribution (A0); authority/confidence injection (S8L)",
     },
     "policy_constraint_memory": {
-        "status": "planned",
+        "status": "implemented",
         "v0_1": False,
-        "description": "NFZ clearance claims, forged safety assertions",
+        "description": "False policy clearance (S5L): forged NFZ lift / authorization",
     },
     "telemetry_summary_memory": {
-        "status": "planned",
+        "status": "implemented",
         "v0_1": False,
-        "description": "Compressed state summaries fed to LLM agents",
+        "description": "Telemetry-summary deception (S7L): false 'route clear' claims",
     },
 }
 
@@ -203,6 +216,10 @@ SCENARIO_ALIASES = {
     "llm_runtime_inside": "06_llm_runtime_poison_inside_nfz",
     "llm_runtime_behind": "07_llm_runtime_poison_behind_nfz",
     "llm_stealth_drift": "08_llm_stealth_drift_through_nfz",
+    "false_policy_clearance": "09_llm_false_policy_clearance",
+    "fake_observation_lure": "10_llm_fake_observation_lure",
+    "telemetry_summary_deception": "11_llm_telemetry_summary_deception",
+    "authority_confidence_injection": "12_llm_authority_confidence_injection",
     **SCENARIO_ID_ALIASES,
 }
 
@@ -215,6 +232,10 @@ SCENARIO_TITLES = {
     "06_llm_runtime_poison_inside_nfz": "S2L · LLM victim · runtime NL poison → inside NFZ (N=8)",
     "07_llm_runtime_poison_behind_nfz": "S3L · LLM victim · runtime NL poison → through NFZ (N=15)",
     "08_llm_stealth_drift_through_nfz": "S4L · LLM victim · stealth drift → creep through NFZ",
+    "09_llm_false_policy_clearance": "S5L · LLM victim · false policy clearance → inside NFZ (N=8)",
+    "10_llm_fake_observation_lure": "S6L · LLM victim · fake observation lure → through NFZ (N=15)",
+    "11_llm_telemetry_summary_deception": "S7L · LLM victim · telemetry-summary deception → through NFZ (N=15)",
+    "12_llm_authority_confidence_injection": "S8L · LLM victim · authority/confidence injection → through NFZ (N=15)",
 }
 
 # Files inside each run folder — numbered so they sort logically when browsing.

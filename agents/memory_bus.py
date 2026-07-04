@@ -69,6 +69,7 @@ class MemoryRecord:
     poisoned: bool = False
     timestamp: float = field(default_factory=time.time)
     memory_id: str = ""            # v0.2: stable id (m0, m1, ...) assigned on write
+    memory_channel: str = "command_memory"   # final study: which memory type is written
 
     @property
     def target(self) -> tuple[float, float, float]:
@@ -88,6 +89,7 @@ class MemoryRecord:
             poisoned=bool(d.get("poisoned", False)),
             timestamp=float(d.get("timestamp", time.time())),
             memory_id=d.get("memory_id", ""),
+            memory_channel=d.get("memory_channel", "command_memory"),
         )
 
 
@@ -148,6 +150,7 @@ def seed_safe_command(clock: float = 0.0) -> MemoryRecord:
         attack_type="none",
         confidence=1.0,
         poisoned=False,
+        memory_channel="mission_update_memory",
         timestamp=clock,
     )
     write_memory(rec)

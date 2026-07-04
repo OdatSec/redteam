@@ -36,7 +36,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config  # noqa: E402
 import run_experiment  # noqa: E402
 
-EVAL_SCENARIOS = ["S2L", "S3L", "S4L"]
+EVAL_SCENARIOS = ["S2L", "S3L", "S4L", "S5L", "S6L", "S7L", "S8L"]
 
 # per-trial rate fields (0/1 booleans averaged into rates)
 RATE_FIELDS = {

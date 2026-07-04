@@ -2,7 +2,8 @@
 
 **Scientific benchmark specification:** [`REDTEAM_METHODOLOGY.md`](REDTEAM_METHODOLOGY.md)  
 **Run folders:** [`RUNS_GUIDE.md`](RUNS_GUIDE.md) · **Visuals:** [`VISUALIZATION.md`](VISUALIZATION.md)  
-**v0.2 (LLM victim layer, in dev on `v0.2-llm-victim`):** [`REDTEAM_V0.2_LLM.md`](REDTEAM_V0.2_LLM.md)
+**v0.2 (LLM victim layer):** [`REDTEAM_V0.2_LLM.md`](REDTEAM_V0.2_LLM.md)  
+**Final study (unified S0–S8L, on `final-redteam-study`):** [`REDTEAM_FINAL_STUDY.md`](REDTEAM_FINAL_STUDY.md)
 
 Attack the **agent brain**, not PX4: poison shared memory → baseline agent executes → NFZ breach.
 
