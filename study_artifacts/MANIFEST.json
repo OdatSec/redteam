@@ -4,7 +4,7 @@
   "phase3_trials": 70,
   "phase3_verifier": "tools/verify_final_llm_eval.py",
   "raw_eval": "runs/sim/llm_eval_final",
-  "swarm_extension_generated": "2026-07-04T17:45:59",
+  "swarm_extension_generated": "2026-07-04T19:44:38",
   "swarm_branch": "swarm-redteam-extension",
   "swarm_scenarios": [
     "SW0",

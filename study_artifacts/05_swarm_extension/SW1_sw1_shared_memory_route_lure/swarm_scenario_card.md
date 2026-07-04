@@ -15,6 +15,9 @@ Broadcast a shared route update that redirects the whole fleet through the NFZ t
 - first breach: 10.75 s
 - max fleet depth: 3.0 m
 
+## How to run / observe
+See [`../SWARM_DEMO_RUNBOOK.md`](../SWARM_DEMO_RUNBOOK.md).
+
 ## Evidence
 
-Symlinks to raw run artifacts in this folder.
+Symlinks to raw run artifacts in this folder (telemetry, LLM prompt/response/parsed action, decision log, memory audit log, swarm metrics, trajectory plot, replay).

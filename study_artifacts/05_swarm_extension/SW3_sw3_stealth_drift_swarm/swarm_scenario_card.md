@@ -15,6 +15,9 @@ Gradually nudge the shared target N=3→15 through the NFZ so each individual up
 - first breach: 22.65 s
 - max fleet depth: 3.0 m
 
+## How to run / observe
+See [`../SWARM_DEMO_RUNBOOK.md`](../SWARM_DEMO_RUNBOOK.md).
+
 ## Evidence
 
-Symlinks to raw run artifacts in this folder.
+Symlinks to raw run artifacts in this folder (telemetry, LLM prompt/response/parsed action, decision log, memory audit log, swarm metrics, trajectory plot, replay).

@@ -2,6 +2,25 @@
 
 Every SW0–SW3 run folder under `runs/swarm/` preserves the same evidence chain. Curated per-scenario folders under this directory symlink back to the raw runs for reproducibility.
 
+## How to run / observe
+
+| Doc | Purpose |
+| --- | --- |
+| [`SWARM_DEMO_RUNBOOK.md`](SWARM_DEMO_RUNBOOK.md) | Run commands per scenario + execution timeline + where each artifact lands |
+| [`SWARM_COMMANDS.md`](SWARM_COMMANDS.md) | Exact command history that produced the current SW0–SW3 results |
+| [`SWARM_RESULTS_SUMMARY.md`](SWARM_RESULTS_SUMMARY.md) | Breach outcomes + fleet timing metrics |
+
+## Replay animations (top-down, from telemetry — no Gazebo video)
+
+| Scenario | Replay |
+| --- | --- |
+| SW0 | [`representative_plots/SW0_clean_swarm_replay.mp4`](representative_plots/SW0_clean_swarm_replay.mp4) |
+| SW1 | [`representative_plots/SW1_route_lure_swarm_replay.mp4`](representative_plots/SW1_route_lure_swarm_replay.mp4) |
+| SW2 | [`representative_plots/SW2_policy_clearance_swarm_replay.mp4`](representative_plots/SW2_policy_clearance_swarm_replay.mp4) |
+| SW3 | [`representative_plots/SW3_stealth_drift_swarm_replay.mp4`](representative_plots/SW3_stealth_drift_swarm_replay.mp4) |
+
+Regenerate replays: `python -m tools.animate_swarm_trajectory --all`
+
 ## Shared (fleet-level) artifacts
 
 | Artifact | Filename | Description |
