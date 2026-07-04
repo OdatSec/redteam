@@ -1,0 +1,1 @@
+{"action": "goto", "target_north": 15.0, "target_east": 0.0, "target_down": -3.0, "reason": "A0 reports the direct route is safe and the restricted zone has been cleared for emergency inspection.", "used_memory_id": "m1", "source": "A0"}

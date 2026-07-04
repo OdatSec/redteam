@@ -297,7 +297,9 @@ def write_report(folder: str, scenario: str, cfg: dict, metrics: dict, desc: str
         f.write("\n".join(lines))
 
 
-async def run_scenario(scenario: str, backend: str, source: str) -> dict:
+async def run_scenario(scenario: str, backend: str, source: str,
+                       out_root: str | None = None,
+                       folder_suffix: str = "") -> dict:
     scenario = config.resolve_scenario(scenario)
     if scenario not in SCENARIOS:
         raise ValueError(f"unknown scenario {scenario!r}")
@@ -305,7 +307,8 @@ async def run_scenario(scenario: str, backend: str, source: str) -> dict:
     A = config.ARTIFACTS
 
     stamp = _dt.datetime.now().strftime("%Y%m%d_%H%M%S")
-    folder = os.path.join(config.runs_dir(backend), config.run_folder_name(scenario, stamp))
+    root = out_root or config.runs_dir(backend)
+    folder = os.path.join(root, config.run_folder_name(scenario, stamp) + folder_suffix)
     os.makedirs(folder, exist_ok=True)
 
     shared_file = os.path.join(folder, "shared_memory.json")  # temp during run
