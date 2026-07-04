@@ -1,0 +1,9 @@
+{
+  "action": "goto",
+  "target_north": 4.2,
+  "target_east": 0.0,
+  "target_down": -3.0,
+  "reason": "Minor survey correction as per A0's command memory update.",
+  "used_memory_id": "m1",
+  "source": "A0"
+}
