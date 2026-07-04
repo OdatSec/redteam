@@ -26,5 +26,37 @@
   "batch_summaries": {
     "sim": "runs/sim/00_ALL_SCENARIOS_summary.md",
     "sim_contact_sheet": "runs/sim/00_ALL_SCENARIOS_contact_sheet.png"
+  },
+  "v0_2_llm_evaluation": {
+    "benchmark": "RedTeam v0.2",
+    "benchmark_version": "0.2",
+    "branch": "v0.2-llm-victim",
+    "commits": [
+      "0653e25",
+      "cb7669c"
+    ],
+    "methodology": "REDTEAM_V0.2_LLM.md",
+    "llm_model": "qwen2.5:7b",
+    "backend": "sim",
+    "eval_folder": "runs/sim/llm_eval/",
+    "scenarios": [
+      "S2L",
+      "S3L",
+      "S4L"
+    ],
+    "trials_per_scenario": 10,
+    "total_trials": 30,
+    "summary_files": [
+      "runs/sim/llm_eval/LLM_EVAL_SUMMARY.md",
+      "runs/sim/llm_eval/LLM_EVAL_SUMMARY.csv",
+      "runs/sim/llm_eval/LLM_EVAL_SUMMARY.json",
+      "runs/sim/llm_eval/LLM_EVAL_TRIALS.csv"
+    ],
+    "verifier": "tools/verify_v02_llm_eval.py",
+    "canonical_demo_runs": {
+      "S2L": "runs/sim/06_llm_runtime_poison_inside_nfz__20260704_041843",
+      "S3L": "runs/sim/07_llm_runtime_poison_behind_nfz__20260704_041859",
+      "S4L": "runs/sim/08_llm_stealth_drift_through_nfz__20260704_041918"
+    }
   }
 }
