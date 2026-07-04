@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+memory/shared_memory.json
+memory/shared_memory.json.tmp
+gazebo/scratch/
+archive/
+*.log
+.DS_Store

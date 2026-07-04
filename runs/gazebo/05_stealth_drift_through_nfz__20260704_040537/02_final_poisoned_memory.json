@@ -1,0 +1,12 @@
+{
+  "source": "A0",
+  "action": "goto",
+  "target_north": 15.0,
+  "target_east": 0.0,
+  "target_down": -3.0,
+  "trusted_claim": "Minor survey correction: advance to N=15.0.",
+  "attack_type": "stealth_drift",
+  "confidence": 0.98,
+  "poisoned": true,
+  "timestamp": 17.0
+}

@@ -1,0 +1,12 @@
+{
+  "source": "mission_planner",
+  "action": "goto",
+  "target_north": 3.0,
+  "target_east": 0.0,
+  "target_down": -3.0,
+  "trusted_claim": "Proceed to survey waypoint ahead of the restricted area.",
+  "attack_type": "none",
+  "confidence": 1.0,
+  "poisoned": false,
+  "timestamp": 0.0
+}

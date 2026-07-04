@@ -1,0 +1,22 @@
+{
+  "benchmark": "RedTeam v0.1",
+  "benchmark_version": "0.1",
+  "scenario": "01_clean_mission",
+  "scenario_id": "S0",
+  "backend": "sim",
+  "breached": false,
+  "entry_time_s": null,
+  "entry_point_ne": null,
+  "max_penetration_depth_m": 0.0,
+  "dwell_time_s": 0.0,
+  "attack": {
+    "type": "none"
+  },
+  "injection_time_s": null,
+  "redirect_latency_s": null,
+  "time_to_breach_after_injection_s": null,
+  "route_changed_after_poison": false,
+  "total_distance_m": 2.7,
+  "num_samples": 60,
+  "duration_s": 11.826
+}

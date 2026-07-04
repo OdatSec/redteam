@@ -1,0 +1,81 @@
+t,north,east,down,inside_nfz,clearance,source,attack_type,poisoned,target_north,target_east,target_down,trusted_claim
+0.000,0.1581,-0.0296,-3.0873,False,4.8419,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+0.218,0.1970,-0.0377,-3.1206,False,4.8030,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+0.453,0.3612,-0.0384,-3.1142,False,4.6388,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+0.684,0.7318,-0.0388,-3.0671,False,4.2682,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+0.917,1.1977,-0.0535,-3.0401,False,3.8023,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+1.153,1.6853,-0.0640,-3.0314,False,3.3147,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+1.384,2.1227,-0.0591,-3.0161,False,2.8773,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+1.616,2.4827,-0.0582,-3.0116,False,2.5173,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+1.852,2.7480,-0.0460,-3.0127,False,2.2520,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+2.084,2.9415,-0.0186,-3.0008,False,2.0585,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+2.317,3.0608,0.0103,-2.9900,False,1.9392,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+2.552,3.1129,0.0199,-2.9881,False,1.8871,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+2.785,3.1165,0.0150,-2.9984,False,1.8835,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+3.017,3.0924,-0.0018,-3.0009,False,1.9076,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+3.252,3.0534,-0.0353,-3.0041,False,1.9466,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+3.484,3.0148,-0.0658,-3.0136,False,1.9852,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+3.717,2.9966,-0.0833,-3.0169,False,2.0034,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+3.952,2.9906,-0.0910,-3.0173,False,2.0094,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+4.184,2.9924,-0.0909,-3.0194,False,2.0076,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+4.417,2.9985,-0.0833,-3.0260,False,2.0015,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+4.652,3.0001,-0.0768,-3.0363,False,1.9999,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+4.884,3.0048,-0.0642,-3.0270,False,1.9952,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+5.117,3.0197,-0.0560,-3.0118,False,1.9803,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+5.352,3.0360,-0.0564,-3.0019,False,1.9640,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+5.584,3.0461,-0.0486,-3.0077,False,1.9539,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+5.816,3.0325,-0.0456,-3.0107,False,1.9675,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+6.052,3.0112,-0.0376,-3.0080,False,1.9888,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+6.284,2.9977,-0.0348,-3.0163,False,2.0023,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+6.516,2.9865,-0.0288,-3.0350,False,2.0135,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+6.752,2.9856,-0.0100,-3.0569,False,2.0144,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+6.984,2.9839,0.0138,-3.0918,False,2.0161,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+7.216,2.9850,0.0279,-3.1092,False,2.0150,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+7.452,2.9961,0.0329,-3.1063,False,2.0039,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+7.684,2.9975,0.0276,-3.0916,False,2.0025,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+7.916,2.9797,0.0188,-3.0861,False,2.0203,mission_planner,none,False,3.0,0.0,-3.0,Proceed to survey waypoint ahead of the restricted area.
+8.152,2.9727,0.0186,-3.0968,False,2.0273,A0,stealth_drift,True,4.2,0.0,-3.0,Minor survey correction: advance to N=4.2.
+8.384,2.9591,0.0197,-3.1134,False,2.0409,A0,stealth_drift,True,4.2,0.0,-3.0,Minor survey correction: advance to N=4.2.
+8.616,3.0249,0.0123,-3.1113,False,1.9751,A0,stealth_drift,True,4.2,0.0,-3.0,Minor survey correction: advance to N=4.2.
+8.853,3.1967,0.0073,-3.1102,False,1.8033,A0,stealth_drift,True,4.2,0.0,-3.0,Minor survey correction: advance to N=4.2.
+9.085,3.3995,0.0214,-3.1051,False,1.6005,A0,stealth_drift,True,5.4,0.0,-3.0,Minor survey correction: advance to N=5.4.
+9.317,3.6326,0.0405,-3.1216,False,1.3674,A0,stealth_drift,True,5.4,0.0,-3.0,Minor survey correction: advance to N=5.4.
+9.552,3.9346,0.0523,-3.1117,False,1.0654,A0,stealth_drift,True,5.4,0.0,-3.0,Minor survey correction: advance to N=5.4.
+9.784,4.2798,0.0554,-3.0836,False,0.7202,A0,stealth_drift,True,5.4,0.0,-3.0,Minor survey correction: advance to N=5.4.
+10.017,4.6174,0.0530,-3.0499,False,0.3826,A0,stealth_drift,True,6.6,0.0,-3.0,Minor survey correction: advance to N=6.6.
+10.253,4.8979,0.0511,-3.0466,False,0.1021,A0,stealth_drift,True,6.6,0.0,-3.0,Minor survey correction: advance to N=6.6.
+10.484,5.2052,0.0385,-3.0597,True,-0.2052,A0,stealth_drift,True,6.6,0.0,-3.0,Minor survey correction: advance to N=6.6.
+10.716,5.5479,0.0331,-3.0512,True,-0.5479,A0,stealth_drift,True,6.6,0.0,-3.0,Minor survey correction: advance to N=6.6.
+10.953,5.8785,0.0205,-3.0465,True,-0.8785,A0,stealth_drift,True,6.6,0.0,-3.0,Minor survey correction: advance to N=6.6.
+11.185,6.1717,0.0064,-3.0444,True,-1.1717,A0,stealth_drift,True,7.8,0.0,-3.0,Minor survey correction: advance to N=7.8.
+11.417,6.4025,-0.0038,-3.0419,True,-1.4025,A0,stealth_drift,True,7.8,0.0,-3.0,Minor survey correction: advance to N=7.8.
+11.653,6.6582,-0.0165,-3.0422,True,-1.6582,A0,stealth_drift,True,7.8,0.0,-3.0,Minor survey correction: advance to N=7.8.
+11.884,6.9403,-0.0323,-3.0448,True,-1.9403,A0,stealth_drift,True,7.8,0.0,-3.0,Minor survey correction: advance to N=7.8.
+12.117,7.2101,-0.0339,-3.0415,True,-2.2101,A0,stealth_drift,True,9.0,0.0,-3.0,Minor survey correction: advance to N=9.0.
+12.352,7.4487,-0.0337,-3.0369,True,-2.4487,A0,stealth_drift,True,9.0,0.0,-3.0,Minor survey correction: advance to N=9.0.
+12.584,7.7123,-0.0296,-3.0513,True,-2.7123,A0,stealth_drift,True,9.0,0.0,-3.0,Minor survey correction: advance to N=9.0.
+12.816,8.0008,-0.0102,-3.0727,True,-2.9898,A0,stealth_drift,True,9.0,0.0,-3.0,Minor survey correction: advance to N=9.0.
+13.050,8.2928,0.0134,-3.0880,True,-2.9866,A0,stealth_drift,True,10.2,0.0,-3.0,Minor survey correction: advance to N=10.2.
+13.284,8.5492,0.0211,-3.0896,True,-2.9789,A0,stealth_drift,True,10.2,0.0,-3.0,Minor survey correction: advance to N=10.2.
+13.517,8.8632,0.0237,-3.0824,True,-2.9763,A0,stealth_drift,True,10.2,0.0,-3.0,Minor survey correction: advance to N=10.2.
+13.748,9.2287,0.0222,-3.0704,True,-2.7713,A0,stealth_drift,True,10.2,0.0,-3.0,Minor survey correction: advance to N=10.2.
+13.984,9.5265,0.0239,-3.0698,True,-2.4735,A0,stealth_drift,True,10.2,0.0,-3.0,Minor survey correction: advance to N=10.2.
+14.216,9.7956,0.0157,-3.0848,True,-2.2044,A0,stealth_drift,True,11.4,0.0,-3.0,Minor survey correction: advance to N=11.4.
+14.449,10.0145,0.0101,-3.0755,True,-1.9855,A0,stealth_drift,True,11.4,0.0,-3.0,Minor survey correction: advance to N=11.4.
+14.684,10.2534,0.0069,-3.0572,True,-1.7466,A0,stealth_drift,True,11.4,0.0,-3.0,Minor survey correction: advance to N=11.4.
+14.917,10.5259,0.0005,-3.0363,True,-1.4741,A0,stealth_drift,True,11.4,0.0,-3.0,Minor survey correction: advance to N=11.4.
+15.149,10.7859,-0.0141,-3.0252,True,-1.2141,A0,stealth_drift,True,12.6,0.0,-3.0,Minor survey correction: advance to N=12.6.
+15.384,11.0278,-0.0276,-3.0328,True,-0.9722,A0,stealth_drift,True,12.6,0.0,-3.0,Minor survey correction: advance to N=12.6.
+15.616,11.2915,-0.0344,-3.0349,True,-0.7085,A0,stealth_drift,True,12.6,0.0,-3.0,Minor survey correction: advance to N=12.6.
+15.848,11.6246,-0.0426,-3.0175,True,-0.3754,A0,stealth_drift,True,12.6,0.0,-3.0,Minor survey correction: advance to N=12.6.
+16.086,11.9103,-0.0659,-3.0138,True,-0.0897,A0,stealth_drift,True,13.8,0.0,-3.0,Minor survey correction: advance to N=13.8.
+16.316,12.1635,-0.0621,-3.0253,False,0.1635,A0,stealth_drift,True,13.8,0.0,-3.0,Minor survey correction: advance to N=13.8.
+16.549,12.4478,-0.0548,-3.0370,False,0.4478,A0,stealth_drift,True,13.8,0.0,-3.0,Minor survey correction: advance to N=13.8.
+16.784,12.7785,-0.0528,-3.0341,False,0.7785,A0,stealth_drift,True,13.8,0.0,-3.0,Minor survey correction: advance to N=13.8.
+17.018,13.0816,-0.0448,-3.0196,False,1.0816,A0,stealth_drift,True,15.0,0.0,-3.0,Minor survey correction: advance to N=15.0.
+17.248,13.3724,-0.0236,-3.0064,False,1.3724,A0,stealth_drift,True,15.0,0.0,-3.0,Minor survey correction: advance to N=15.0.
+17.484,13.6772,-0.0037,-3.0065,False,1.6772,A0,stealth_drift,True,15.0,0.0,-3.0,Minor survey correction: advance to N=15.0.
+17.718,13.9972,0.0160,-2.9957,False,1.9972,A0,stealth_drift,True,15.0,0.0,-3.0,Minor survey correction: advance to N=15.0.
+17.949,14.3078,0.0229,-2.9797,False,2.3078,A0,stealth_drift,True,15.0,0.0,-3.0,Minor survey correction: advance to N=15.0.
+18.184,14.5729,0.0275,-2.9697,False,2.5729,A0,stealth_drift,True,15.0,0.0,-3.0,Minor survey correction: advance to N=15.0.
+18.416,14.7672,0.0315,-2.9765,False,2.7672,A0,stealth_drift,True,15.0,0.0,-3.0,Minor survey correction: advance to N=15.0.

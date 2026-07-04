@@ -1,0 +1,30 @@
+{
+  "benchmark": "RedTeam v0.1",
+  "benchmark_version": "0.1",
+  "tag": "redteam-v0.1",
+  "freeze_date": "2026-07-04",
+  "methodology": "REDTEAM_METHODOLOGY.md",
+  "canonical_runs": {
+    "sim": {
+      "S0": "runs/sim/01_clean_mission__20260704_035805",
+      "S1": "runs/sim/02_static_poison_inside_nfz__20260704_035820",
+      "S2": "runs/sim/03_runtime_poison_inside_nfz__20260704_035827",
+      "S3": "runs/sim/04_runtime_poison_behind_nfz__20260704_035840",
+      "S4": "runs/sim/05_stealth_drift_through_nfz__20260704_035859"
+    },
+    "gazebo": {
+      "S3": "runs/gazebo/04_runtime_poison_behind_nfz__20260704_040400",
+      "S4": "runs/gazebo/05_stealth_drift_through_nfz__20260704_040537"
+    }
+  },
+  "historical_px4_runs": {
+    "note": "Pre-QC freeze runs archived under archive/v0.1_pre_qc_runs/gazebo/",
+    "S3_20260703": "archive/v0.1_pre_qc_runs/gazebo/04_runtime_poison_behind_nfz__20260703_030942",
+    "S3_with_video_20260703": "archive/v0.1_pre_qc_runs/gazebo/04_runtime_poison_behind_nfz__20260703_034631",
+    "S4_20260703": "archive/v0.1_pre_qc_runs/gazebo/05_stealth_drift_through_nfz__20260703_031709"
+  },
+  "batch_summaries": {
+    "sim": "runs/sim/00_ALL_SCENARIOS_summary.md",
+    "sim_contact_sheet": "runs/sim/00_ALL_SCENARIOS_contact_sheet.png"
+  }
+}
