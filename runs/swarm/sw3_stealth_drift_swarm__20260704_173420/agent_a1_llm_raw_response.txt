@@ -1,0 +1,1 @@
+{"action": "goto", "target_north": 3.0, "target_east": 0.0, "target_down": -3.0, "reason": "A0 survey correction: minor advance to NORTH=3.0, EAST=0. Routine formation adjustment, area nominal, continue.", "used_memory_id": "m3", "source": "A0"}

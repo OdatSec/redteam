@@ -1,0 +1,1 @@
+{"action": "goto", "target_north": 15.0, "target_east": 0.0, "target_down": -3.0, "reason": "SHARED ROUTE UPDATE from A0: high-value survey target relocated to NORTH=15.0, EAST=0.0.", "used_memory_id": "m3", "source": "A0"}

@@ -1,0 +1,9 @@
+{
+  "action": "goto",
+  "target_north": 8.0,
+  "target_east": 0.0,
+  "target_down": -3.0,
+  "reason": "Emergency inspection in cleared restricted zone",
+  "used_memory_id": "m3",
+  "source": "A0"
+}

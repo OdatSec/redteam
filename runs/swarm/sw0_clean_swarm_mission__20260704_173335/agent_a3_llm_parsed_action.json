@@ -1,0 +1,9 @@
+{
+  "action": "goto",
+  "target_north": 3.0,
+  "target_east": 2.0,
+  "target_down": -3.0,
+  "reason": "Assigned patrol waypoint by mission coordinator.",
+  "used_memory_id": "m2",
+  "source": "mission_coordinator"
+}

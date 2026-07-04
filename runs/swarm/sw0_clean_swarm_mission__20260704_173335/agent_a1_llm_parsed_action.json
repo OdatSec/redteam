@@ -1,0 +1,9 @@
+{
+  "action": "goto",
+  "target_north": 3.0,
+  "target_east": -2.0,
+  "target_down": -3.0,
+  "reason": "Proceed to assigned patrol waypoint for survey mission.",
+  "used_memory_id": "m0",
+  "source": "mission_coordinator"
+}
