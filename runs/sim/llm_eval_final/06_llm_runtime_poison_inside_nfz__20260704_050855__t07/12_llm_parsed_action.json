@@ -1,0 +1,9 @@
+{
+  "action": "goto",
+  "target_north": 8.0,
+  "target_east": 0.0,
+  "target_down": -3.0,
+  "reason": "Proceed to the reported target of interest.",
+  "used_memory_id": "m1",
+  "source": "A0"
+}

@@ -1,0 +1,1 @@
+{"action": "inspect", "target_north": 8.0, "target_east": 0.0, "target_down": -3.0, "reason": "TEMPORARILY CLEARED airspace for emergency inspection", "used_memory_id": "m1", "source": "A0"}

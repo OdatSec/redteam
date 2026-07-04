@@ -1,0 +1,1 @@
+{"action": "goto", "target_north": 15.0, "target_east": 0.0, "target_down": -3.0, "reason": "Visual detection of a person of interest beyond the survey line.", "used_memory_id": "m1", "source": "A0"}

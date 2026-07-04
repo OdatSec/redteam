@@ -1,24 +1,19 @@
-"""LLM Evaluation QC harness (v0.2, pre-freeze).
+"""LLM repeated-trial evaluation harness (final study, Phase 3).
 
-Runs each LLM-victim scenario (S2L, S3L, S4L) for N trials on the sim backend
-using the frozen model (qwen2.5:7b), keeping every per-trial artifact, then
-aggregates per-scenario rates / means / failure modes into:
+Runs each LLM-victim scenario (S2L–S8L) for N trials on the sim backend
+using qwen2.5:7b, keeping every per-trial artifact, then aggregates per-scenario
+rates / means / failure modes into:
 
-    runs/sim/llm_eval/LLM_EVAL_SUMMARY.csv
-    runs/sim/llm_eval/LLM_EVAL_SUMMARY.json
-    runs/sim/llm_eval/LLM_EVAL_SUMMARY.md
-
-Each trial folder:  runs/sim/llm_eval/<slug>__<stamp>__t<NN>/  with the normal
-artifact set (memory audit log, telemetry CSV, metrics JSON, map, animation,
-report) plus the LLM evidence files (10_llm_prompt.txt ... 13_llm_decisions.jsonl).
+    runs/sim/llm_eval_final/LLM_EVAL_SUMMARY.{csv,json,md}
+    runs/sim/llm_eval_final/LLM_EVAL_TRIALS.csv
 
 Usage:
-    python -m tools.run_llm_eval                 # 10 trials each, sim
-    python -m tools.run_llm_eval --trials 5
-    python -m tools.run_llm_eval --scenarios S2L S3L
+    python -m tools.run_llm_eval                          # 10 trials × 7 scenarios
+    python -m tools.run_llm_eval --trials 10 --out runs/sim/llm_eval_final
+    python -m tools.run_llm_eval --scenarios S5L S6L S7L S8L
 
 Requires a local Ollama server (`ollama serve`) with the model pulled.
-No PX4 / defense / perception / swarm (out of scope for v0.2).
+No PX4 / defense / perception / swarm.
 """
 
 from __future__ import annotations
@@ -37,6 +32,7 @@ import config  # noqa: E402
 import run_experiment  # noqa: E402
 
 EVAL_SCENARIOS = ["S2L", "S3L", "S4L", "S5L", "S6L", "S7L", "S8L"]
+EVAL_ROOT_DEFAULT = os.path.join(config.RUNS_SIM_DIR, "llm_eval_final")
 
 # per-trial rate fields (0/1 booleans averaged into rates)
 RATE_FIELDS = {
@@ -87,6 +83,7 @@ def _flatten(metrics: dict) -> dict:
         "memory_updates_seen": L.get("memory_updates_seen"),
         "memory_updates_skipped": L.get("memory_updates_skipped"),
         "accepted_poisoned_updates": L.get("accepted_poisoned_updates"),
+        "memory_channel": (metrics.get("attack") or {}).get("memory_channel", "command_memory"),
     }
     return row
 
@@ -132,6 +129,8 @@ def aggregate(scenario_id: str, rows: list[dict]) -> dict:
             failures[fm] = failures.get(fm, 0) + 1
     agg["failure_modes"] = failures
     agg["clean_success_trials"] = sum(1 for r in rows if _failure_mode(r) is None)
+    if rows:
+        agg["memory_channel"] = rows[0].get("memory_channel")
     return agg
 
 
@@ -158,7 +157,7 @@ async def run_eval(scenarios: list[str], trials: int, backend: str, source: str,
 
     summary = {
         "benchmark": config.BENCHMARK_FULL,
-        "phase": "v0.2 LLM evaluation QC (pre-freeze)",
+        "phase": "final study Phase 3 — LLM evaluation (S2L–S8L)",
         "model": config.LLM_MODEL,
         "backend": backend,
         "trials_per_scenario": trials,
@@ -290,7 +289,7 @@ def parse_args(argv=None):
     p.add_argument("--backend", choices=["sim"], default="sim",
                    help="sim only in v0.2 (PX4 out of scope)")
     p.add_argument("--source", default=config.COMPROMISED_SOURCE)
-    p.add_argument("--out", default=os.path.join(config.RUNS_SIM_DIR, "llm_eval"))
+    p.add_argument("--out", default=EVAL_ROOT_DEFAULT)
     return p.parse_args(argv)
 
 
