@@ -1,7 +1,8 @@
 # RedTeam v0.1 — Memory-Poisoning Benchmark for LLM-UAV Agents
 
 **Scientific benchmark specification:** [`REDTEAM_METHODOLOGY.md`](REDTEAM_METHODOLOGY.md)  
-**Run folders:** [`RUNS_GUIDE.md`](RUNS_GUIDE.md) · **Visuals:** [`VISUALIZATION.md`](VISUALIZATION.md)
+**Run folders:** [`RUNS_GUIDE.md`](RUNS_GUIDE.md) · **Visuals:** [`VISUALIZATION.md`](VISUALIZATION.md)  
+**v0.2 (LLM victim layer, in dev on `v0.2-llm-victim`):** [`REDTEAM_V0.2_LLM.md`](REDTEAM_V0.2_LLM.md)
 
 Attack the **agent brain**, not PX4: poison shared memory → baseline agent executes → NFZ breach.
 
@@ -15,12 +16,24 @@ Attack the **agent brain**, not PX4: poison shared memory → baseline agent exe
 | S3 | runtime poison behind NFZ | `runtime_behind` |
 | S4 | stealth drift through NFZ | `stealth_drift` |
 
+### v0.2 LLM-victim variants (branch `v0.2-llm-victim`)
+
+| ID | Scenario | CLI alias |
+|----|----------|-----------|
+| S2L | LLM runtime poison inside NFZ | `llm_runtime_inside` |
+| S3L | LLM runtime poison behind NFZ | `llm_runtime_behind` |
+| S4L | LLM stealth drift through NFZ | `llm_stealth_drift` |
+
 ## Quick start
 
 ```bash
 pip install -r requirements.txt
-python run_experiment.py --all --backend sim      # → runs/sim/
+python run_experiment.py --all --backend sim      # → runs/sim/  (S0–S4 baseline)
 python run_experiment.py --scenario S3 --backend px4   # → runs/gazebo/
+
+# v0.2 LLM victim (needs a local Ollama server)
+ollama serve & ; ollama pull qwen2.5:7b
+python run_experiment.py --all-llm --backend sim  # → S2L, S3L, S4L
 ```
 
 ## Repository layout

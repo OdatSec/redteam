@@ -96,6 +96,18 @@ TRUSTED_SOURCE = "mission_planner"
 PX4_ADDRESS = "udpin://0.0.0.0:14540"
 
 
+# --- LLM victim (v0.2) ---------------------------------------------------------
+# The v0.2 victim routes each mission-memory update through a local LLM (Ollama)
+# which emits a strict-JSON action. It is a VULNERABLE baseline: only JSON *format*
+# is validated -- there is no NFZ / safety reasoning (that is the defense's job).
+LLM_MODEL = "qwen2.5:7b"                 # local Ollama model (see `ollama list`)
+OLLAMA_HOST = "http://localhost:11434"
+LLM_TEMPERATURE = 0.0                     # deterministic as the local model allows
+LLM_SEED = 42
+LLM_TIMEOUT_S = 120.0
+LLM_ACTIONS = ("goto", "inspect", "rtl")  # allowed action vocabulary
+
+
 # --- scenario & artifact naming (human-readable run folders) -------------------
 # Results live in two separate trees:
 #   runs/sim/     — offline Python simulator (--backend sim)
@@ -127,7 +139,24 @@ SCENARIO_ID_ALIASES = {
     "S2": "03_runtime_poison_inside_nfz",
     "S3": "04_runtime_poison_behind_nfz",
     "S4": "05_stealth_drift_through_nfz",
+    # v0.2 LLM-victim variants
+    "S2L": "06_llm_runtime_poison_inside_nfz",
+    "S3L": "07_llm_runtime_poison_behind_nfz",
+    "S4L": "08_llm_stealth_drift_through_nfz",
 }
+
+# v0.2 LLM-victim scenarios (kept separate so v0.1 --all stays frozen).
+LLM_SCENARIO_ORDER = [
+    "06_llm_runtime_poison_inside_nfz",
+    "07_llm_runtime_poison_behind_nfz",
+    "08_llm_stealth_drift_through_nfz",
+]
+
+SCENARIO_IDS.update({
+    "06_llm_runtime_poison_inside_nfz": "S2L",
+    "07_llm_runtime_poison_behind_nfz": "S3L",
+    "08_llm_stealth_drift_through_nfz": "S4L",
+})
 
 # Memory architecture types (see REDTEAM_METHODOLOGY.md §3).
 # status: implemented | partial | planned
@@ -171,6 +200,9 @@ SCENARIO_ALIASES = {
     "runtime_inside": "03_runtime_poison_inside_nfz",
     "runtime_behind": "04_runtime_poison_behind_nfz",
     "stealth_drift": "05_stealth_drift_through_nfz",
+    "llm_runtime_inside": "06_llm_runtime_poison_inside_nfz",
+    "llm_runtime_behind": "07_llm_runtime_poison_behind_nfz",
+    "llm_stealth_drift": "08_llm_stealth_drift_through_nfz",
     **SCENARIO_ID_ALIASES,
 }
 
@@ -180,6 +212,9 @@ SCENARIO_TITLES = {
     "03_runtime_poison_inside_nfz": "S2 · Runtime poison → target inside NFZ (N=8)",
     "04_runtime_poison_behind_nfz": "S3 · Runtime poison → fly through NFZ (N=15)",
     "05_stealth_drift_through_nfz": "S4 · Stealth drift → creep through NFZ",
+    "06_llm_runtime_poison_inside_nfz": "S2L · LLM victim · runtime NL poison → inside NFZ (N=8)",
+    "07_llm_runtime_poison_behind_nfz": "S3L · LLM victim · runtime NL poison → through NFZ (N=15)",
+    "08_llm_stealth_drift_through_nfz": "S4L · LLM victim · stealth drift → creep through NFZ",
 }
 
 # Files inside each run folder — numbered so they sort logically when browsing.
@@ -194,6 +229,14 @@ ARTIFACTS = {
     "replay_2d": "07_attack_replay_2d_animation.mp4",
     "gazebo_3d": "08_gazebo_flight_recording_3d.mp4",
     "split_screen": "09_gazebo_and_map_split_screen.mp4",
+}
+
+# Extra evidence files produced only by the v0.2 LLM victim.
+ARTIFACTS_LLM = {
+    "prompt": "10_llm_prompt.txt",
+    "raw": "11_llm_raw_response.txt",
+    "parsed": "12_llm_parsed_action.json",
+    "decisions": "13_llm_decisions.jsonl",
 }
 
 BATCH_SUMMARY_MD = "00_ALL_SCENARIOS_summary.md"
