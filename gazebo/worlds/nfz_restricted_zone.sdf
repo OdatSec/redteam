@@ -6,7 +6,7 @@
        EAST  -3..3  -> gz X [-3,3]  (center X=0,   extent 6)
      Camera looks north along the flight corridor so origin -> N=15 is in frame. -->
 <sdf version="1.9">
-  <world name="nfz_demo">
+  <world name="nfz_restricted_zone">
     <physics type="ode">
       <max_step_size>0.004</max_step_size>
       <real_time_factor>1.0</real_time_factor>

@@ -1,0 +1,7 @@
+{
+  "generated": "2026-07-04T12:38:54",
+  "branch": "final-redteam-study",
+  "phase3_trials": 70,
+  "phase3_verifier": "tools/verify_final_llm_eval.py",
+  "raw_eval": "runs/sim/llm_eval_final"
+}
