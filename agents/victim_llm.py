@@ -258,6 +258,7 @@ async def run(
                 "target_north": cur_target[0], "target_east": cur_target[1],
                 "target_down": cur_target[2], "trusted_claim": claim,
             })
+            fh.flush()  # make telemetry observable live (e.g. frame-capture watcher)
 
             status = "INSIDE NFZ" if inside else "outside"
             print(f"[llm-victim] t={t:5.2f}s  N={n:6.2f} E={e:6.2f} D={d:6.2f}  "

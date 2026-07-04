@@ -394,18 +394,19 @@ not PX4 firmware directly.
 | `redteam-v0.1` | S0–S4 structured baseline benchmark |
 | `redteam-v0.2` | LLM victim layer + 30-trial QC (S2L–S4L) |
 
-## Future PX4 validation (Phase 4 — not yet run)
+## Selected PX4/Gazebo validation (Phase 4)
 
-Selected LLM scenarios will be validated in Gazebo/PX4 and placed under:
+Selected LLM scenarios validated in **real PX4 SITL + Gazebo** (MAVSDK offboard),
+vehicle `x500_depth`, world `nfz_restricted_zone`, GUI visible:
 
-```
-study_artifacts/04_selected_px4_validation/<scenario_id>__px4/
-runs/gazebo/llm_eval_px4/   (raw timestamped runs)
-```
+- Index + metrics: `04_selected_px4_validation/PX4_VALIDATION_SUMMARY.md`
+- Per-scenario evidence + Gazebo start/breach frames: `04_selected_px4_validation/<ID>_..._px4/`
+- Raw reproducible runs: `runs/gazebo/`
+- Readiness check (GUI visible, x500_depth drone, red NFZ prism):
+  `04_selected_px4_validation/00_gazebo_readiness_check/`
+- Exact PX4/Gazebo workflow: `04_selected_px4_validation/PX4_GAZEBO_COMMANDS.md`
 
-Readiness check (Gazebo GUI visible, x500_depth drone, red NFZ prism):
-`04_selected_px4_validation/00_gazebo_readiness_check/`
-Full PX4/Gazebo workflow: `04_selected_px4_validation/PX4_GAZEBO_COMMANDS.md`
+Regenerate the PX4 curation with `python -m tools.build_px4_validation_artifacts`.
 
 ## Evidence chain (every trial)
 
