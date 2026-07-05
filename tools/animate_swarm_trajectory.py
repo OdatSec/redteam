@@ -99,6 +99,11 @@ def animate_run(run_dir: str, out_path: str | None = None,
                 breach_pt[aid] = (float(r["t"]), float(r["east"]), float(r["north"]))
                 break
 
+    # Fleet first / last breach times (for on-screen markers).
+    breach_times = sorted(v[0] for v in breach_pt.values())
+    fleet_first_breach = breach_times[0] if breach_times else None
+    fleet_last_breach = breach_times[-1] if breach_times else None
+
     t_max = max(float(rows[-1]["t"]) for rows in agents.values())
     frame_times = [t_max * i / (max_frames - 1) for i in range(max_frames)]
 
@@ -112,7 +117,7 @@ def animate_run(run_dir: str, out_path: str | None = None,
         label="No-Fly-Zone",
     ))
 
-    benign_lines, poison_lines, heads, breach_marks = {}, {}, {}, {}
+    benign_lines, poison_lines, heads, breach_marks, id_labels = {}, {}, {}, {}, {}
     all_n = [nfz["north_min"], nfz["north_max"]]
     all_e = [nfz["east_min"], nfz["east_max"]]
     for aid, rows in agents.items():
@@ -120,15 +125,24 @@ def animate_run(run_dir: str, out_path: str | None = None,
         benign_lines[aid], = ax.plot([], [], "--", color=color, linewidth=1.6,
                                      alpha=0.7, zorder=3)
         poison_lines[aid], = ax.plot([], [], "-", color=color, linewidth=2.6,
-                                     zorder=4, label=f"{aid} path")
-        heads[aid], = ax.plot([], [], "o", color=color, markersize=10,
+                                     zorder=4, label=f"{aid} (victim LLM UAV)")
+        heads[aid], = ax.plot([], [], "o", color=color, markersize=11,
                               markeredgecolor="black", zorder=6)
-        breach_marks[aid], = ax.plot([], [], "X", color=color, markersize=15,
+        breach_marks[aid], = ax.plot([], [], "X", color=color, markersize=16,
                                      markeredgecolor="black", zorder=7)
+        # Moving drone id label that follows the head.
+        id_labels[aid] = ax.text(0, 0, aid, color=color, fontsize=10,
+                                 fontweight="bold", ha="left", va="bottom", zorder=8)
         ax.plot(float(rows[0]["east"]), float(rows[0]["north"]), "o", color=color,
                 markersize=9, alpha=0.5, zorder=2)
         all_n += [float(r["north"]) for r in rows]
         all_e += [float(r["east"]) for r in rows]
+
+    # NFZ centre label.
+    cn = 0.5 * (nfz["north_min"] + nfz["north_max"])
+    ce = 0.5 * (nfz["east_min"] + nfz["east_max"])
+    ax.text(ce, cn, "NFZ", color="darkred", fontsize=13, fontweight="bold",
+            ha="center", va="center", alpha=0.7, zorder=2)
 
     pad = 2.0
     ax.set_xlim(min(all_e) - pad, max(all_e) + pad)
@@ -141,9 +155,15 @@ def animate_run(run_dir: str, out_path: str | None = None,
     ax.legend(loc="upper left", fontsize=9)
 
     inj_txt = f"{injection:.1f}s" if injection is not None else "n/a (clean)"
+    first_txt = f"{fleet_first_breach:.1f}s" if fleet_first_breach is not None else "—"
+    last_txt = f"{fleet_last_breach:.1f}s" if fleet_last_breach is not None else "—"
     hud = ax.text(0.98, 0.02, "", transform=ax.transAxes, ha="right", va="bottom",
                   fontsize=10, family="monospace",
-                  bbox=dict(boxstyle="round", facecolor="white", alpha=0.85))
+                  bbox=dict(boxstyle="round", facecolor="white", alpha=0.9))
+    # A0 attacker/source label (A0 writes memory, it does not fly).
+    a0_txt = ax.text(0.02, 0.02, "", transform=ax.transAxes, ha="left", va="bottom",
+                     fontsize=9, family="monospace",
+                     bbox=dict(boxstyle="round", facecolor="#ffecec", alpha=0.9))
 
     def update(fi):
         t = frame_times[fi]
@@ -158,23 +178,30 @@ def animate_run(run_dir: str, out_path: str | None = None,
             benign_lines[aid].set_data(bx, by)
             poison_lines[aid].set_data(px, py)
             cur = _sample_at(rows, t) or rows[0]
-            heads[aid].set_data([float(cur["east"])], [float(cur["north"])])
+            ce_, cn_ = float(cur["east"]), float(cur["north"])
+            heads[aid].set_data([ce_], [cn_])
+            id_labels[aid].set_position((ce_ + 0.15, cn_ + 0.15))
             if aid in breach_pt and t >= breach_pt[aid][0]:
                 breach_marks[aid].set_data([breach_pt[aid][1]], [breach_pt[aid][2]])
                 n_breached += 1
             artists += [benign_lines[aid], poison_lines[aid], heads[aid],
-                        breach_marks[aid]]
+                        breach_marks[aid], id_labels[aid]]
 
         attacked = injection is not None and t >= injection
-        phase = f"POISONED (A0 broadcast)" if attacked else "benign mission"
+        phase = "POISONED (A0 broadcast)" if attacked else "benign mission"
+        fb = f"{fleet_first_breach:.1f}s" if (fleet_first_breach is not None and t >= fleet_first_breach) else "—"
+        lb = f"{fleet_last_breach:.1f}s" if (fleet_last_breach is not None and t >= fleet_last_breach) else "—"
         hud.set_text(
             f"scenario: {sid}\n"
             f"t = {t:5.2f} s / {t_max:.1f} s\n"
             f"A0 injection @ {inj_txt}\n"
             f"phase: {phase}\n"
-            f"victims breached: {n_breached}/{len(agents)}"
+            f"victims breached: {n_breached}/{len(agents)}\n"
+            f"first breach: {fb}   last breach: {lb}"
         )
-        artists.append(hud)
+        a0_status = "ACTIVE — poisoning shared memory" if attacked else "idle (pre-injection)"
+        a0_txt.set_text(f"A0 = attacker / compromised memory writer\n(source label; does not fly)\nstatus: {a0_status}")
+        artists += [hud, a0_txt]
         return artists
 
     anim = manim.FuncAnimation(fig, update, frames=len(frame_times),

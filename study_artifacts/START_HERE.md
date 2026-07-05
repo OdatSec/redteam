@@ -81,6 +81,17 @@ multi-PX4 yet.
 - Multi-drone Gazebo readiness (visual only): [`06_multidrone_gazebo_readiness/`](06_multidrone_gazebo_readiness/)
 - Branch: `swarm-redteam-extension`
 
+## Swarm showcase (visual presentation)
+
+Presentation-ready visuals of how the poison propagates through the fleet:
+storyboards, a memory-propagation timeline, annotated replay videos, and a
+**live Gazebo demo** you can run in front of an audience.
+
+- Overview + attack stories + disclaimer: [`07_swarm_showcase/SWARM_SHOWCASE_OVERVIEW.md`](07_swarm_showcase/SWARM_SHOWCASE_OVERVIEW.md)
+- **Live Gazebo demo:** [`07_swarm_showcase/SWARM_LIVE_GAZEBO_DEMO.md`](07_swarm_showcase/SWARM_LIVE_GAZEBO_DEMO.md) — `python -m tools.run_gazebo_swarm_live_demo --scenario SW1`
+- Storyboards + timeline: `07_swarm_showcase/SW{1,2,3}_*_storyboard.png`, `SWARM_PROPAGATION_TIMELINE.png`
+- Gazebo visual playback (telemetry-driven, **not** multi-PX4): [`07_swarm_showcase/gazebo_playback/`](07_swarm_showcase/gazebo_playback/)
+
 ## Evidence chain (every trial)
 
 
