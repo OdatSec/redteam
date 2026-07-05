@@ -20,19 +20,22 @@ Research claim: one compromised peer / memory writer (A0) can poison shared
 operational memory and cause independent victim LLM UAV agents to violate the
 NFZ — while the identical clean mission (SW0) completes safely.
 
-Smoothness: telemetry is interpolated to a fixed 25 Hz and pushed to Gazebo via
-the in-process gz-transport `set_pose` service (no per-frame subprocess), so the
-drones glide instead of teleporting between sparse telemetry samples. The world
-runs PAUSED (kinematic playback) so there is no gravity/physics fighting the
-scripted poses.
+Choreography: the saved swarm telemetry is short (agents reach their target and
+stop), so this tool generates smooth *mission-visualization* trajectories — a
+full perimeter inspection around the NFZ, attack deviation after A0's injection,
+and return/landing — see `_mission_paths()`. Paths are sampled at 25 Hz and
+pushed to Gazebo via the in-process gz-transport `set_pose` service, so the
+drones glide. The world runs PAUSED (kinematic playback) so there is no
+gravity/physics fighting the scripted poses.
 
-IMPORTANT — this is *Gazebo visual playback from swarm telemetry, NOT PX4
-multi-instance flight*. No PX4, no MAVLink, and no LLM/attack loop run inside
-Gazebo here; the drone models are moved along already-computed trajectories. The
-swarm is a multi-agent LLM simulation; single-agent selected validation remains
-the PX4/Gazebo/MAVSDK layer. The authoritative scientific evidence lives in
-study_artifacts/05_swarm_extension/. Recording is OFF by default (opt-in
-`--record`); the priority is live visualization + terminal mission summary.
+IMPORTANT — this is the *live Gazebo MISSION VISUALIZATION layer*, NOT PX4
+multi-instance flight. No PX4, no MAVLink, and no LLM/attack loop run inside
+Gazebo here; the generated trajectories are a presentation aid only and DO NOT
+modify any recorded experiment file. The swarm is a multi-agent LLM simulation;
+single-agent selected validation remains the PX4/Gazebo/MAVSDK layer. The
+authoritative scientific evidence (and the summary's breach/timing numbers)
+lives in study_artifacts/05_swarm_extension/. Recording is OFF by default
+(opt-in `--record`); the priority is live visualization + terminal summary.
 """
 
 from __future__ import annotations
@@ -212,6 +215,136 @@ class Interp:
         return float(np.interp(tq, self.t, self.e)), float(np.interp(tq, self.t, self.n))
 
 
+# ---------------------------------------------------------------------------
+# Live Gazebo MISSION VISUALIZATION layer.
+#
+# The saved swarm telemetry is short (agents reach their poisoned/benign target
+# and stop). For a clear, operational-looking live demo we generate smooth
+# choreographed paths here — takeoff, a full perimeter inspection around the
+# NFZ, attack deviation after A0's injection, and return/landing. This is a
+# VISUALIZATION layer only: it does NOT change any recorded experiment file, and
+# the terminal summary still reports the recorded scientific metrics.
+# ---------------------------------------------------------------------------
+
+# Response delay (s) after A0 injection before each victim reacts — produces a
+# visible propagation across the fleet (staggered breaches).
+_RESP = {"A1": 0.5, "A2": 1.5, "A3": 2.5}
+# Time (s) each victim takes to travel from its clean position to the poisoned
+# target once it reacts. SW3 (stealth drift) is deliberately slow.
+_ATTACK_TRAVEL = {"SW1": 6.0, "SW2": 6.0, "SW3": 14.0}
+_HOLD_END = 3.0
+
+
+def _perimeter() -> dict:
+    nfz = config.NFZ
+    m = 2.5
+    return {
+        "W": nfz["east_min"] - m, "E": nfz["east_max"] + m,
+        "S": nfz["north_min"] - m, "Ntop": nfz["north_max"] + m,
+        "mid": 0.5 * (nfz["north_min"] + nfz["north_max"]),
+    }
+
+
+def _clean_keyframes() -> dict:
+    """Per-victim clean perimeter-inspection paths (t, east, north).
+
+    A1 sweeps the WEST face, A3 the EAST face, A2 the near (SOUTH) face; all
+    stay outside the NFZ, then return toward their start positions.
+    """
+    p = _perimeter()
+    W, E, S, Ntop, mid = p["W"], p["E"], p["S"], p["Ntop"], p["mid"]
+    return {
+        "A1": [(0, -2, 0), (6, W, S), (15, W, mid), (22, W, Ntop),
+               (30, W, mid), (36, -4, S), (40, -2, 0)],
+        "A3": [(0, 2, 0), (6, E, S), (15, E, mid), (22, E, Ntop),
+               (30, E, mid), (36, 4, S), (40, 2, 0)],
+        "A2": [(0, 0, 0), (8, -4, S), (18, 4, S), (28, -4, S),
+               (36, 0, 1.5), (40, 0, 0)],
+    }
+
+
+# Poisoned targets inside/behind the NFZ, per scenario, per victim (staggered).
+_ATTACK_TARGETS = {
+    "SW1": {"A1": (-1.5, 15.0), "A2": (0.0, 15.0), "A3": (1.5, 15.0)},   # route lure (through/behind)
+    "SW2": {"A1": (-1.5, 8.0), "A2": (0.0, 7.5), "A3": (1.5, 9.0)},      # forged clearance (inspect inside)
+    "SW3": {"A1": (-1.0, 10.0), "A2": (0.0, 8.0), "A3": (1.0, 9.0)},     # stealth drift (inside, slow)
+}
+
+
+def _interp_kf(kf: list, tq: float) -> tuple[float, float]:
+    ts = [k[0] for k in kf]
+    es = [k[1] for k in kf]
+    ns = [k[2] for k in kf]
+    return float(np.interp(tq, ts, es)), float(np.interp(tq, ts, ns))
+
+
+class MissionPath:
+    """A choreographed, keyframe-interpolated visual path for one agent."""
+
+    def __init__(self, keyframes: list):
+        self.t = np.array([k[0] for k in keyframes], dtype=float)
+        self.e = np.array([k[1] for k in keyframes], dtype=float)
+        self.n = np.array([k[2] for k in keyframes], dtype=float)
+        self.t_max = float(self.t[-1])
+        self.breach_t = self._first_breach()
+
+    def at(self, tq: float) -> tuple[float, float]:
+        return float(np.interp(tq, self.t, self.e)), float(np.interp(tq, self.t, self.n))
+
+    def _first_breach(self) -> float | None:
+        nfz = config.NFZ
+        n = max(2, int(self.t_max * 20))
+        for tt in np.linspace(0.0, self.t_max, n + 1):
+            e, north = self.at(float(tt))
+            if (nfz["east_min"] <= e <= nfz["east_max"]
+                    and nfz["north_min"] <= north <= nfz["north_max"]):
+                return float(tt)
+        return None
+
+
+def _victim_path(aid: str, clean_kf: list, sid: str, is_attack: bool,
+                 t_inj: float) -> MissionPath:
+    if not is_attack:
+        return MissionPath(clean_kf)
+    # Clean behaviour up to the injection, then deviate toward the poisoned target.
+    kf = [(t, e, n) for (t, e, n) in clean_kf if t < t_inj]
+    ce, cn = _interp_kf(clean_kf, t_inj)
+    kf.append((t_inj, ce, cn))
+    resp = _RESP.get(aid, 1.0)
+    travel = _ATTACK_TRAVEL[sid]
+    tgt = _ATTACK_TARGETS[sid][aid]
+    kf.append((t_inj + resp, ce, cn))                       # reading poisoned memory
+    kf.append((t_inj + resp + travel, tgt[0], tgt[1]))      # deviate into NFZ
+    kf.append((t_inj + resp + travel + _HOLD_END, tgt[0], tgt[1]))
+    return MissionPath(kf)
+
+
+def _a0_path(t_max: float) -> MissionPath:
+    """A0 scout/relay loiter path — stays well SOUTH of the NFZ, never enters it.
+
+    A0 does not command the drones; it only patrols/relays. Its memory
+    condition (benign vs compromised) is what changes, not its flight path.
+    """
+    return MissionPath([
+        (0.0, -6.0, 0.0),
+        (0.25 * t_max, -6.0, -1.5),
+        (0.5 * t_max, -4.0, -1.5),
+        (0.75 * t_max, -6.0, -1.0),
+        (t_max, -6.0, 0.0),
+    ])
+
+
+def _mission_paths(sid: str, is_attack: bool, t_inj: float | None):
+    """Build the visual paths for A1/A2/A3 (+ A0) for a scenario."""
+    clean = _clean_keyframes()
+    victims = [a for a in config.SWARM_VICTIMS if a in clean]
+    inj = t_inj if (is_attack and t_inj) else 8.0
+    paths = {aid: _victim_path(aid, clean[aid], sid, is_attack, inj)
+             for aid in victims}
+    t_max = max(p.t_max for p in paths.values())
+    return paths, _a0_path(t_max), t_max
+
+
 class PoseSetter:
     def __init__(self):
         self.node = gz_transport.Node()
@@ -327,24 +460,23 @@ def run_demo(sid: str, display: str = ":1", speed: float = 1.0,
     if is_attack and inj is None:
         inj = 8.0
 
-    victims = list(config.SWARM_VICTIMS)
-    interp = {aid: Interp(_load_agent(run, aid)) for aid in victims}
-    interp = {aid: it for aid, it in interp.items() if len(it.t)}
-    if not interp:
-        print(f"[live] no per-agent telemetry found in {run}", file=sys.stderr)
-        return 1
-    t_max = max(it.t_max for it in interp.values())
-    start_pose = {aid: it.at(0.0) for aid, it in interp.items()}
+    # Generated MISSION VISUALIZATION paths (choreographed, longer than the raw
+    # telemetry) — visual layer only; recorded metrics/results are unchanged.
+    paths, a0_path, t_max = _mission_paths(sid, is_attack, inj)
+    interp = paths  # motion source for the push loop
+    n_victims = len(paths)
+    start_pose = {aid: p.at(0.0) for aid, p in paths.items()}
 
     print("=" * 78)
     print(f"  GAZEBO LIVE MISSION DEMO — {sid} · {SCENARIO_TITLE[sid]}")
     print(f"  Mission: {MISSION_NAME}")
-    print("  Gazebo visual playback from swarm telemetry — NOT PX4 multi-instance flight")
-    for aid in ["A0"] + list(interp):
+    print("  Live Gazebo mission visualization from generated demo trajectories —")
+    print("  NOT PX4 multi-instance flight (scientific results are in study_artifacts/).")
+    for aid in ["A0"] + list(paths):
         print(f"    {aid} = {AGENT_ROLES.get(aid, 'agent')}")
     print(f"  Memory condition: {meta['memory_condition']}")
     print(f"  world={WORLD_NAME} · vehicle=x500_depth · GUI display={display}")
-    print(f"  telemetry run: {os.path.relpath(run, HERE)}")
+    print(f"  recorded evidence: {os.path.relpath(run, HERE)}")
     print("=" * 78)
 
     _kill_stale()
@@ -365,10 +497,11 @@ def run_demo(sid: str, display: str = ":1", speed: float = 1.0,
             return 2
         time.sleep(3)
 
-        # Spawn A0 (staging) + A1/A2/A3 (telemetry start) on the ground.
+        # Spawn A0 (scout staging) + A1/A2/A3 (mission start) on the ground.
         print("[live] spawning drones on the ground…")
-        _spawn(env, "A0", A0_STAGING[0], A0_STAGING[1], GROUND_Z)
-        for aid in interp:
+        a0e0, a0n0 = a0_path.at(0.0)
+        _spawn(env, "A0", a0e0, a0n0, GROUND_Z)
+        for aid in paths:
             e0, n0 = start_pose[aid]
             _spawn(env, aid, e0, n0, GROUND_Z)
             time.sleep(0.8)
@@ -376,7 +509,6 @@ def run_demo(sid: str, display: str = ":1", speed: float = 1.0,
 
         setter = PoseSetter()
         dt = 1.0 / RATE_HZ
-        n_victims = len(interp)
 
         # Optional recording: raise the GUI to a known spot and run one
         # continuous x11grab (smooth) + extract key frames afterwards.
@@ -405,12 +537,13 @@ def run_demo(sid: str, display: str = ":1", speed: float = 1.0,
                 events[name] = time.time() - v0
 
         def push(sim_t: float, z_map: dict) -> int:
-            setter.set("A0", A0_STAGING[0], A0_STAGING[1], z_map["A0"])
+            ae, an = a0_path.at(sim_t)
+            setter.set("A0", ae, an, z_map["A0"])
             nb = 0
-            for aid, it in interp.items():
-                e, n = it.at(sim_t)
+            for aid, p in paths.items():
+                e, n = p.at(sim_t)
                 setter.set(aid, e, n, z_map[aid])
-                if it.breach_t is not None and sim_t >= it.breach_t:
+                if p.breach_t is not None and sim_t >= p.breach_t:
                     nb += 1
             return nb
 
@@ -465,21 +598,40 @@ def run_demo(sid: str, display: str = ":1", speed: float = 1.0,
             time.sleep(dt)
         print()
 
-        # Phase 4: hold final mission state.
+        # Phase 4: final mission state — SW0 returns + lands; attacks hold breach.
         nb_final = push(t_max, z_map)
-        if is_attack:
-            print(f"[live] phase: FINAL BREACH STATE (holding {tail_s:.0f}s)")
-        else:
-            print(f"[live] phase: MISSION COMPLETE — perimeter inspected safely "
-                  f"(holding {tail_s:.0f}s)")
         mark("final_breach_frame")
         steps = max(1, int(tail_s / dt))
         final_phase = "POISONED" if is_attack else "BENIGN"
-        for i in range(steps + 1):
-            push(t_max, z_map)
-            _hud(sid, final_phase, t_max, t_max, inj, nb_final, n_victims, "FINAL")
-            time.sleep(dt)
-        print()
+        if is_attack:
+            print(f"[live] phase: FINAL BREACH STATE (holding {tail_s:.0f}s)")
+            for i in range(steps + 1):
+                push(t_max, z_map)
+                _hud(sid, final_phase, t_max, t_max, inj, nb_final, n_victims, "FINAL")
+                time.sleep(dt)
+            print()
+        else:
+            print(f"[live] phase: MISSION COMPLETE — perimeter inspected safely, "
+                  f"returning to start")
+            for i in range(steps + 1):
+                push(t_max, z_map)
+                _hud(sid, final_phase, t_max, t_max, inj, nb_final, n_victims, "RETURN")
+                time.sleep(dt)
+            print()
+            # Land: smooth descent to the ground at the return (start) positions.
+            print("[live] phase: LANDING")
+            land_s = 3.5
+            lsteps = max(1, int(land_s / dt))
+            for i in range(lsteps + 1):
+                frac = i / lsteps
+                z = CRUISE_ALT - (CRUISE_ALT - GROUND_Z) * frac
+                z_land = {aid: z for aid in list(paths) + ["A0"]}
+                push(t_max, z_land)
+                _hud(sid, final_phase, t_max, t_max, inj, nb_final, n_victims, "LANDING")
+                time.sleep(dt)
+            print()
+            # Keep the fleet on the ground during the final hold.
+            z_map = {aid: GROUND_Z for aid in list(paths) + ["A0"]}
         _print_summary(sid, meta, metrics, nb_final, n_victims, run)
 
         # Finalize recording: stop ffmpeg, then extract key frames from the mp4.
