@@ -367,18 +367,21 @@ def write_overview(infos: dict) -> None:
         "",
         "## Run it live in Gazebo",
         "",
-        "For a live, smooth Gazebo demo (drones spawn, take off, then the swarm "
-        "attack plays out through the NFZ), see "
+        "For a live, mission-style Gazebo demo (four UAVs run a restricted-zone "
+        "perimeter inspection; the clean mission stays safe while the attacks "
+        "breach the NFZ), see "
         "[`SWARM_LIVE_GAZEBO_DEMO.md`](SWARM_LIVE_GAZEBO_DEMO.md):",
         "",
         "```bash",
-        "python -m tools.run_gazebo_swarm_live_demo --scenario SW1",
-        "python -m tools.run_gazebo_swarm_live_demo --scenario SW2",
-        "python -m tools.run_gazebo_swarm_live_demo --scenario SW3",
+        "python -m tools.run_gazebo_swarm_live_demo --scenario SW0   # clean, 0/3",
+        "python -m tools.run_gazebo_swarm_live_demo --scenario SW1   # attack, 3/3",
+        "python -m tools.run_gazebo_swarm_live_demo --scenario SW2   # attack, 3/3",
+        "python -m tools.run_gazebo_swarm_live_demo --scenario SW3   # attack, 3/3",
         "```",
         "",
-        "This is **Gazebo visual playback from swarm telemetry, not PX4 "
-        "multi-instance flight**.",
+        "Same 4-UAV mission and agents throughout; only A0's shared-memory "
+        "condition changes (benign vs compromised). This is **Gazebo visual "
+        "playback from swarm telemetry, not PX4 multi-instance flight**.",
         "",
         "## Disclaimer — scope of these results",
         "",
